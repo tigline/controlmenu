@@ -9,6 +9,7 @@ import android.util.Log;
 
 import com.badlogic.gdx.scenes.scene2d.actions.AddListenerAction;
 
+import cocos2d.cocoa.CCPoint;
 import cocos2d.label_nodes.CCLabelTTF;
 import cocos2d.predefine.CCTouch;
 import cocos2d.sprite_nodes.CCSprite;
@@ -24,14 +25,16 @@ public class Circle extends CCSprite {
 	/**
 	 * @param string
 	 */
-	public Circle(String image,String text) {
-		super(image);
+	public Circle(String text, float scale) {
+		super("launcher/circle4.png");
 
 		CCLabelTTF content = new CCLabelTTF(text, "fangzheng.ttf", 36);
+		setScale(scale);
 		content.setPosition(getContentSize().width/2.0f, getContentSize().height/2.0f);
+		
 		addChild(content);
-		setTouchEnabled(true);
-		setTouchMode(CCTouchMode.OneByOne);
+		//setTouchEnabled(true);
+		//setTouchMode(CCTouchMode.OneByOne);
 		//registerWithTouchDispatcher();
 	
 	}
@@ -41,10 +44,10 @@ public class Circle extends CCSprite {
 	public Boolean touchBegan(CCTouch pTouch)
 	{	
 		Log.e("Circle", "touchBegan" );
-		float x = pTouch.getLocation().x;
-		float y = pTouch.getLocation().y;
+		//float x = pTouch.getLocation().x;
+		//float y = pTouch.getLocation().y;
 
-		setPosition(x, y);
+		//setPosition(x, y);
 		return true;
 	}
 
@@ -63,6 +66,7 @@ public class Circle extends CCSprite {
 		float y = pTouch.getLocation().y;
 		setPosition(x, y);
 	}
+	
 //	public Circle(String image){
 //
 //		//sprite = new CCSprite(image);

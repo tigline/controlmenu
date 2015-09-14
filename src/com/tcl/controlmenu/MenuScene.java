@@ -100,6 +100,7 @@ public class MenuScene extends CCLayer
 		
 		CCSprite player = new CCSprite();
 		player.initWithFile("data/player.png");
+
 		
 		player.setPosition(0 + player.getContentSize().width/2,
                 0 + visibleSize.height/2);
@@ -302,7 +303,7 @@ public class MenuScene extends CCLayer
 		
 		// Move projectile to actual endpoint
 		projectile.runAction( new CCSequence(
-			new CCMoveTo(realMoveDuration, realDest),
+			new CCMoveTo(realMoveDuration, realDest), 
 			new CCCallFuncN(this.spriteMoveFinished)
 			));
 
