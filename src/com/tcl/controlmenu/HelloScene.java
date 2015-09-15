@@ -39,7 +39,7 @@ public class HelloScene extends CCLayer {
 	
 	private boolean run = true;
 	public static CCSize winSize;
-	private Circle [] project = {};
+
 	private static CCSprite backGroud;
 	private static CCSprite starSky;
 	private ArrayList<Circle> circleList ;
@@ -110,8 +110,6 @@ public class HelloScene extends CCLayer {
 		circleBig.setPosition(winSize.width/2, winSize.height/2);
 		scene.addChild(circleBig,1,4);
 
-		
-		
 		CCSprite circle3 = new CCSprite("launcher/circle3.png");
 		circle3.setPosition(circleBig.getContentSize().width/2, circleBig.getContentSize().height/2);
 		circleBig.addChild(circle3,2,3);
@@ -226,13 +224,30 @@ public class HelloScene extends CCLayer {
 //			//new CCCallFuncN(this.spriteMoveFinished)
 //			));
 		
-		if (run) {
-			run = false;
+		//if (run) {
+		/*
+			for (CCSprite jt : circleList)
+	 		{
+	    		CCSprite  target = jt;
+	    		circleList.remove(target);
+	 			this.removeChild(target, true);
+	 			//target.getTexture().getTexture().dispose();
+	 			target = null;
+
+	 		}
+	 		*/
+			//Circle[] projectile = {};
+			for (int i = 0; i < circleList.size(); i++) {
+				CCSprite  target = circleList.get(i);
+				this.removeChild(target,true);
+				target = null;
+			}
+			circleList.clear();
 			for (int i = 0; i < infoList.length; i++) {
 				int num =  (int)MathUtils.random(Integer.MAX_VALUE -1) % 6 + (int)3;
 				float scale = num/10.0f;
-				Circle projectile = new Circle(infoList[i],0.6f);
-				circleList.add(projectile);
+				Circle project = new Circle(infoList[i],scale);
+				circleList.add(project);
 			}
 			
 			for (int i = 0; i < circleList.size(); i++) {
@@ -241,11 +256,8 @@ public class HelloScene extends CCLayer {
 				CCPoint point = new CCPoint(distX, distY);			
 				this.addChild(circleList.get(i));
 				circleList.get(i).setPosition(winSize.width/2, winSize.height/2);
-				circleList.get(i).runAction(new CCMoveTo(1.5f, point));
-				
+				circleList.get(i).runAction(new CCMoveTo(2.5f, point));
 			}
-		}
-		
 
 		// Add to projectiles array
 		//projectile.setTag(2);

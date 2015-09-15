@@ -7,6 +7,7 @@ package com.tcl.controlmenu;
 
 import android.util.Log;
 
+import com.badlogic.gdx.math.collision.BoundingBox;
 import com.badlogic.gdx.scenes.scene2d.actions.AddListenerAction;
 
 import cocos2d.cocoa.CCPoint;
@@ -25,21 +26,37 @@ public class Circle extends CCSprite {
 	/**
 	 * @param string
 	 */
+	
+	private float ACC = 0.5f;
+	private float SPEED;
+	private float MASS = 10;
+	private float COF = 0.05f;
+	
+	//private static  Circle circle;
 	public Circle(String text, float scale) {
 		super("launcher/circle4.png");
 
-		CCLabelTTF content = new CCLabelTTF(text, "fangzheng.ttf", 36);
+		CCLabelTTF content = new CCLabelTTF( text, "fangzheng.ttf", 36);
+		//setAnchorPoint(new CCPoint(0.5f, 0.5f));
 		setScale(scale);
-		content.setPosition(getContentSize().width/2.0f, getContentSize().height/2.0f);
+		content.setPosition(getContentSize().width*scale/2, getContentSize().height*scale/2);
 		
 		addChild(content);
 		//setTouchEnabled(true);
 		//setTouchMode(CCTouchMode.OneByOne);
 		//registerWithTouchDispatcher();
-	
+
 	}
-    
-	
+    /*
+	public static Circle getInstance(String text, float scale)
+	{
+		if (null == circle)
+		{
+			circle = new Circle(text,scale);
+		}
+		return circle;
+	} 
+	*/
 	@Override
 	public Boolean touchBegan(CCTouch pTouch)
 	{	
@@ -64,7 +81,7 @@ public class Circle extends CCSprite {
 	{
 		float x = pTouch.getLocation().x;
 		float y = pTouch.getLocation().y;
-		setPosition(x, y);
+		//setPosition(x, y);
 	}
 	
 //	public Circle(String image){
