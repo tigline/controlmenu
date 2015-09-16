@@ -7,14 +7,15 @@ package com.tcl.controlmenu;
 
 import android.util.Log;
 
-import com.badlogic.gdx.math.collision.BoundingBox;
-import com.badlogic.gdx.scenes.scene2d.actions.AddListenerAction;
 
+
+import cocos2d.actions.action_intervals.CCMoveTo;
 import cocos2d.cocoa.CCPoint;
+import cocos2d.cocoa.CCRect;
 import cocos2d.label_nodes.CCLabelTTF;
 import cocos2d.predefine.CCTouch;
 import cocos2d.sprite_nodes.CCSprite;
-import cocos2d.touch_dispatcher.CCTouchDispatcher;
+
 
 /**
  * @Project ControlMenu	
@@ -27,26 +28,62 @@ public class Circle extends CCSprite {
 	 * @param string
 	 */
 	
-	private float ACC = 0.5f;
-	private float SPEED;
-	private float MASS = 10;
-	private float COF = 0.05f;
+	public float ACC = 0.5f; //加速度
+	public float SPEED;		//
+	public float MASS = 10;
+	public float COF = 0.05f;
+	public float vx ;  //X 分量速度
+	public float vy ;
+	public float BALL_R;
 	
 	//private static  Circle circle;
 	public Circle(String text, float scale) {
 		super("launcher/circle4.png");
-
-		CCLabelTTF content = new CCLabelTTF( text, "fangzheng.ttf", 36);
-		//setAnchorPoint(new CCPoint(0.5f, 0.5f));
 		setScale(scale);
-		content.setPosition(getContentSize().width*scale/2, getContentSize().height*scale/2);
-		
+		CCRect rect = getBoundingBox(this, scale);
+		CCLabelTTF content = new CCLabelTTF( text, "fangzheng.ttf", 36);
+		//setAnchorPoint(new CCPoint(0.5f, 0.5f));		
+		//content.setPosition(getContentSize().width*scale/2, getContentSize().height*scale/2);		
+		content.setPosition((rect.getMaxX() - rect.getMinX())/2, (rect.getMaxY() - rect.getMinY())/2);	
+		this.setBallR((rect.getMaxX() - rect.getMinX())/2);
 		addChild(content);
+		
 		//setTouchEnabled(true);
 		//setTouchMode(CCTouchMode.OneByOne);
 		//registerWithTouchDispatcher();
 
 	}
+	
+	public void setBallR(float ballR){
+		this.BALL_R = ballR;
+	}
+	
+	public float getBallR(){
+		return this.BALL_R;
+	}
+	
+	public CCRect getBoundingBox(CCSprite sprite, float scale){
+		
+		float spriteW = sprite.getContentSize().width;
+		float spriteH = sprite.getContentSize().height;
+		float scaleW = sprite.getContentSize().width * scale;
+		float scaleH = sprite.getContentSize().height * scale;
+		
+		CCRect m_obRect = new CCRect(
+				sprite.getPosition().x - spriteW + (spriteW - scaleW)/2,
+				sprite.getPosition().y - spriteH + (spriteH - scaleH)/2,
+				sprite.getContentSize().width*scale,
+				sprite.getContentSize().height*scale);
+		
+		return m_obRect;
+	}
+	
+	public void TranslateTo(float duration, CCPoint position){
+		this.runAction(new CCMoveTo(duration, position));
+	}
+	
+	
+	
     /*
 	public static Circle getInstance(String text, float scale)
 	{

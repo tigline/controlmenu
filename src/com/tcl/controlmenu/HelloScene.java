@@ -246,7 +246,7 @@ public class HelloScene extends CCLayer {
 			for (int i = 0; i < infoList.length; i++) {
 				int num =  (int)MathUtils.random(Integer.MAX_VALUE -1) % 6 + (int)3;
 				float scale = num/10.0f;
-				Circle project = new Circle(infoList[i],scale);
+				Circle project = new Circle(infoList[i],0.5f);
 				circleList.add(project);
 			}
 			
@@ -256,7 +256,7 @@ public class HelloScene extends CCLayer {
 				CCPoint point = new CCPoint(distX, distY);			
 				this.addChild(circleList.get(i));
 				circleList.get(i).setPosition(winSize.width/2, winSize.height/2);
-				circleList.get(i).runAction(new CCMoveTo(2.5f, point));
+				circleList.get(i).TranslateTo(2.5f, point);
 			}
 
 		// Add to projectiles array
