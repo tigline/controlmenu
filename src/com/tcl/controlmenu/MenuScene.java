@@ -175,7 +175,7 @@ public class MenuScene extends CCLayer
 	    	Array<CCSprite> targetsToDelete =new Array<CCSprite>();
 	    	
 	    	for (CCSprite jt : _targets)
-	    	{
+	    	{ 
 	    		CCSprite target = jt;
 				CCRect targetRect = new CCRect(
 					target.getPosition().x - (target.getContentSize().width/2),

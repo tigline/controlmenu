@@ -5,6 +5,7 @@ package com.tcl.controlmenu;
 
 import java.util.ArrayList;
 
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.collision.BoundingBox;
 import com.tcl.roselauncher.PlayerActivity;
@@ -43,7 +44,8 @@ public class HelloScene extends CCLayer {
 	private static CCSprite backGroud;
 	private static CCSprite starSky;
 	private ArrayList<Circle> circleList ;
-	private String [] infoList = {"碟中谍5","购物" ,"关灯","最新的电影","控制空调","听歌","新闻","电视剧"};
+	//private String [] infoList = {"碟中谍5","购物","听歌", "关灯","新闻","电视剧" };,
+	private String [] infoList = {"碟中谍5", "最新的电影","控制空调","购物","听歌", "关灯","新闻","电视剧"};
 	private static Activity sceneContext;
 	public static CCScene scene(Activity activity){
 		sceneContext= activity;
@@ -164,79 +166,41 @@ public class HelloScene extends CCLayer {
 			CCPoint point = new CCPoint(distX, distY);			
 			helloScene.addChild(circleList.get(i));
 			circleList.get(i).setPosition(winSize.width/2, winSize.height/2);
-			circleList.get(i).runAction(new CCMoveTo(0.5f, point));
-			
+			circleList.get(i).runAction(new CCMoveTo(0.5f, point));	
 		}
 	}
 	
-
+	public void update(float dt){
+		
+		if (circleList.size() > 0) {
+			for (int i = 0; i < circleList.size(); i++) {
+				circleList.get(i).TranslateTo(dt);
+				circleList.get(i).Checkborder();
+			}
+			for (int i = 0; i < circleList.size(); i++) {
+				for (int j = i + 1; j < circleList.size(); j++) {
+					CollisionUtil.collision(circleList.get(i),circleList.get(j));
+				}
+			}
+		}
+		
+	}
+	
 	@Override
 	public void touchEnded(CCTouch pTouch)
 	{
-		// Choose one of the touches to work with
-		//CCPoint location = pTouch.getLocation();
 		
-		// Set up initial location of projectile
-		
-	    //CCPoint origin = CCDirector.sharedDirector().getVisibleOrigin();
-	    //Log.e("Touch", "originX = " + origin.x);
-	    //Log.e("Touch", "originY = " + origin.y);
-	    
-	    /*
-		CCSprite projectile = new CCSprite("data/circle.png");
-		CCLabelTTF content = new CCLabelTTF("超能陆战队", "fangzheng.ttf", 36);
-		content.setPosition(projectile.getContentSize().width/2.5f, projectile.getContentSize().height/2.5f);
-		setScale(0.8f);
-		projectile.addChild(content);
-		*/
-	    //Circle projectile = new Circle("超能陆战队",0.8f);
-		//projectile.setPosition( new CCPoint(winSize.width/2, winSize.height/2) );
-
-		// Determinie offset of location to projectile
-//		float offX = location.x - projectile.getPosition().x;
-//		float offY = location.y - projectile.getPosition().y;
-		
-		// Bail out if we are shooting down or backwards
-//		if (offX <= 0) 
-//		{
-//			return;
-//		}
-		
-		// Ok to add now - we've double checked position
-		//this.addChild(projectile);
-
-		// Determine where we wish to shoot the projectile to
-//		float realX = origin.x+winSize.width + (projectile.getContentSize().width/2);
-//		float ratio = offY / offX;
-//		float realY = (realX * ratio) + projectile.getPosition().y;
-		//CCPoint realDest = new CCPoint(location.x, location.y);
-
-		// Determine the length of how far we're shooting
-		//float offRealX = location.x - projectile.getPosition().x;
-		//float offRealY = location.y - projectile.getPosition().y;
-		//float length = (float)Math.sqrt((offRealX * offRealX) + (offRealY*offRealY));
-		//float velocity = 480/1; // 480pixels/1sec
-		//float realMoveDuration = length/velocity;
-		
-		// Move projectile to actual endpoint
-//		projectile.runAction( new CCSequence(
-//			new CCMoveTo(realMoveDuration, realDest)
-//			//new CCCallFuncN(this.spriteMoveFinished)
-//			));
-		
-		//if (run) {
-		/*
-			for (CCSprite jt : circleList)
-	 		{
-	    		CCSprite  target = jt;
-	    		circleList.remove(target);
-	 			this.removeChild(target, true);
-	 			//target.getTexture().getTexture().dispose();
-	 			target = null;
-
-	 		}
-	 		*/
-			//Circle[] projectile = {};
+			int num =  (int)MathUtils.random(Integer.MAX_VALUE -1) % 6 + (int)3;
+			int index = (int)MathUtils.random(Integer.MAX_VALUE -1) % 7;
+			float scale = num/10.0f;
+			Circle circle = new Circle(infoList[index],scale);
+			
+			circle.setPosition(winSize.width/2, winSize.height/2);
+			circle.vx =  (MathUtils.random(Integer.MAX_VALUE -1) % 1820.0f - 910.0f);
+			circle.vy =  (MathUtils.random(Integer.MAX_VALUE -1) % 980.0f - 490.0f);
+			circleList.add(circle);
+			this.addChild(circle);
+			/*
 			for (int i = 0; i < circleList.size(); i++) {
 				CCSprite  target = circleList.get(i);
 				this.removeChild(target,true);
@@ -246,19 +210,22 @@ public class HelloScene extends CCLayer {
 			for (int i = 0; i < infoList.length; i++) {
 				int num =  (int)MathUtils.random(Integer.MAX_VALUE -1) % 6 + (int)3;
 				float scale = num/10.0f;
-				Circle project = new Circle(infoList[i],0.5f);
+				Circle project = new Circle(infoList[i],scale);
 				circleList.add(project);
 			}
 			
 			for (int i = 0; i < circleList.size(); i++) {
-				float distX =  MathUtils.random(Integer.MAX_VALUE -1) % 1820.0f + 100.0f;
-				float distY =  MathUtils.random(Integer.MAX_VALUE -1) % 980.0f + 100.0f;
-				CCPoint point = new CCPoint(distX, distY);			
-				this.addChild(circleList.get(i));
-				circleList.get(i).setPosition(winSize.width/2, winSize.height/2);
-				circleList.get(i).TranslateTo(2.5f, point);
-			}
+//				float distX =  MathUtils.random(Integer.MAX_VALUE -1) % 1820.0f + 100.0f;
+//				float distY =  MathUtils.random(Integer.MAX_VALUE -1) % 980.0f + 100.0f;
+//				CCPoint point = new CCPoint(distX, distY);	
 
+				circleList.get(i).vx =  (MathUtils.random(Integer.MAX_VALUE -1) % 1820.0f - 910.0f);
+				circleList.get(i).vy =  (MathUtils.random(Integer.MAX_VALUE -1) % 980.0f - 490.0f);
+				circleList.get(i).setPosition(winSize.width/2, winSize.height/2);
+				//circleList.get(i).TranslateTo(2.5f, point);
+				this.addChild(circleList.get(i));
+				}
+			*/
 		// Add to projectiles array
 		//projectile.setTag(2);
 		//_projectiles.add(projectile);

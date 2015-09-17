@@ -54,7 +54,7 @@ public class CollisionUtil {
 	}
 	
 	//两个球进行碰撞物理计算的方法
-	public  boolean collision(Circle balla,Circle ballb)
+	public static  boolean collision(Circle balla,Circle ballb)
 	{
 		
 		//求碰撞直线向量B->A （也就是两个参与碰撞的桌球球心连线的向量）

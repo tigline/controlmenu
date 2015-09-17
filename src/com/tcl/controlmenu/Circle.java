@@ -16,7 +16,7 @@ import cocos2d.label_nodes.CCLabelTTF;
 import cocos2d.predefine.CCTouch;
 import cocos2d.sprite_nodes.CCSprite;
 
-
+import static com.tcl.controlmenu.Constant.*;
 /**
  * @Project ControlMenu	
  * @author houxb
@@ -35,6 +35,8 @@ public class Circle extends CCSprite {
 	public float vx ;  //X 分量速度
 	public float vy ;
 	public float BALL_R;
+	public float xOffset;
+	public float yOffset;
 	
 	//private static  Circle circle;
 	public Circle(String text, float scale) {
@@ -43,11 +45,11 @@ public class Circle extends CCSprite {
 		CCRect rect = getBoundingBox(this, scale);
 		CCLabelTTF content = new CCLabelTTF( text, "fangzheng.ttf", 36);
 		//setAnchorPoint(new CCPoint(0.5f, 0.5f));		
-		//content.setPosition(getContentSize().width*scale/2, getContentSize().height*scale/2);		
+		//content.setPosition(getContentSiye().width*scale/2, getContentSiye().height*scale/2);		
 		content.setPosition((rect.getMaxX() - rect.getMinX())/2, (rect.getMaxY() - rect.getMinY())/2);	
 		this.setBallR((rect.getMaxX() - rect.getMinX())/2);
 		addChild(content);
-		
+
 		//setTouchEnabled(true);
 		//setTouchMode(CCTouchMode.OneByOne);
 		//registerWithTouchDispatcher();
@@ -78,11 +80,31 @@ public class Circle extends CCSprite {
 		return m_obRect;
 	}
 	
-	public void TranslateTo(float duration, CCPoint position){
-		this.runAction(new CCMoveTo(duration, position));
+	public void TranslateTo(float dt){
+		xOffset = getPositionX() + vx*dt;
+		yOffset = getPositionY() + vy*dt;
+		this.setPosition(xOffset, yOffset);
 	}
 	
+	public void Checkborder(){
+
+		if(this.yOffset< (0 + BALL_R + DIS_OFFSET)||this.yOffset>(SCREEN_HEIGHT - BALL_R - DIS_OFFSET))//外围
+		{
+			//碰左挡板或右挡板，y向速度置反
+			this.vy=-this.vy;
+			//flag=true;
+//			Log.d("coll 1"+texId,"x="+this.xOffset+",y="+this.yOffset+", vx="+this.vx+",vy="+this.vy);
+		}
+		if(this.xOffset< (0 + DIS_OFFSET + BALL_R)||this.xOffset>(SCREEN_WIDTH - BALL_R - DIS_OFFSET))//外围
+		{
+			//碰前挡板或后挡板，X向速度置反
+			this.vx=-this.vx;
+			//flag=true;
+//			Log.d("coll 2"+texId,"x="+this.xOffset+",y="+this.yOffset+", vx="+this.vx+",vy="+this.vy);
+		}
+		
 	
+	}
 	
     /*
 	public static Circle getInstance(String text, float scale)
@@ -124,7 +146,7 @@ public class Circle extends CCSprite {
 //	public Circle(String image){
 //
 //		//sprite = new CCSprite(image);
-//		//CCLabelTTF content = new CCLabelTTF(textTure, "fangzheng.ttf", 24);
+//		//CCLabelTTF content = new CCLabelTTF(textTure, "fangyheng.ttf", 24);
 //		//content.setPosition(halo.getContentSize().width/2.5f, halo.getContentSize().height/2.5f);
 //		//halo.addChild(content);
 //		//sprite.setPosition(x, y);
