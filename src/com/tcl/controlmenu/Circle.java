@@ -5,16 +5,18 @@ package com.tcl.controlmenu;
 
 
 
+import java.util.ArrayList;
+
 import android.util.Log;
 
 
 
-import cocos2d.actions.action_intervals.CCMoveTo;
-import cocos2d.cocoa.CCPoint;
+
 import cocos2d.cocoa.CCRect;
 import cocos2d.label_nodes.CCLabelTTF;
 import cocos2d.predefine.CCTouch;
 import cocos2d.sprite_nodes.CCSprite;
+import cocos2d.utils.MathUtils;
 
 import static com.tcl.controlmenu.Constant.*;
 /**
@@ -47,9 +49,10 @@ public class Circle extends CCSprite {
 		//setAnchorPoint(new CCPoint(0.5f, 0.5f));		
 		//content.setPosition(getContentSiye().width*scale/2, getContentSiye().height*scale/2);		
 		content.setPosition((rect.getMaxX() - rect.getMinX())/2, (rect.getMaxY() - rect.getMinY())/2);	
-		this.setBallR((rect.getMaxX() - rect.getMinX())/2);
+		this.setBallR(STANDA_BAll_R * scale/2);
 		addChild(content);
-
+		vx =  (MathUtils.random(Integer.MAX_VALUE -1) % 1820.0f - 910.0f);
+		vy =  (MathUtils.random(Integer.MAX_VALUE -1) % 980.0f - 490.0f);
 		//setTouchEnabled(true);
 		//setTouchMode(CCTouchMode.OneByOne);
 		//registerWithTouchDispatcher();
@@ -80,22 +83,31 @@ public class Circle extends CCSprite {
 		return m_obRect;
 	}
 	
-	public void TranslateTo(float dt){
+	public void TranslateTo(float dt){		
 		xOffset = getPositionX() + vx*dt;
 		yOffset = getPositionY() + vy*dt;
 		this.setPosition(xOffset, yOffset);
+		vx = vx * V_TENUATION;
+		vy = vy * V_TENUATION;
 	}
 	
-	public void Checkborder(){
+	public void CheckCollision(ArrayList<Circle> circleList, float dt){
 
-		if(this.yOffset< (0 + BALL_R + DIS_OFFSET)||this.yOffset>(SCREEN_HEIGHT - BALL_R - DIS_OFFSET))//外围
+		for (int i = 0; i < circleList.size(); i++) {
+			if (this != circleList.get(i)) {					
+				CollisionUtil.collision(this,circleList.get(i));
+				
+			}
+		}
+
+		if(this.yOffset< (BALL_R + DIS_OFFSET)||this.yOffset>(SCREEN_HEIGHT - BALL_R - DIS_OFFSET))//外围
 		{
 			//碰左挡板或右挡板，y向速度置反
 			this.vy=-this.vy;
 			//flag=true;
 //			Log.d("coll 1"+texId,"x="+this.xOffset+",y="+this.yOffset+", vx="+this.vx+",vy="+this.vy);
 		}
-		if(this.xOffset< (0 + DIS_OFFSET + BALL_R)||this.xOffset>(SCREEN_WIDTH - BALL_R - DIS_OFFSET))//外围
+		if(this.xOffset< (DIS_OFFSET + BALL_R)||this.xOffset>(SCREEN_WIDTH - BALL_R - DIS_OFFSET))//外围
 		{
 			//碰前挡板或后挡板，X向速度置反
 			this.vx=-this.vx;
@@ -103,6 +115,7 @@ public class Circle extends CCSprite {
 //			Log.d("coll 2"+texId,"x="+this.xOffset+",y="+this.yOffset+", vx="+this.vx+",vy="+this.vy);
 		}
 		
+		this.TranslateTo(dt);
 	
 	}
 	

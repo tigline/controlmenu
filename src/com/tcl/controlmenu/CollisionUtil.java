@@ -36,8 +36,7 @@ public class CollisionUtil {
 		float dp=dotProduct(vec1,vec2);
 		//再求两个向量的模
 		float m1=mould(vec1);
-		float m2=mould(vec2);
-		
+		float m2=mould(vec2);		
 		float acos=dp/(m1*m2);
 		
 		//为了避免计算误差带来的问题
@@ -126,7 +125,7 @@ public class CollisionUtil {
 		//垂直方向的Xy分速度
 		float vaVerticalX=0;
 		float vaVerticaly=0;
-		
+		 
 		//若球速度小于阈值则认为速度为零，不用进行分解计算了
 		if(V_THRESHOLD<vA)
 		{
