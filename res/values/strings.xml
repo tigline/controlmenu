@@ -3,5 +3,14 @@
 
     <string name="app_name">ControlMenu</string>
     <string name="hello_world">Hello world!</string>
-
+	    <string name="btn_start">Start</string>
+    <string name="btn_exit">Stop</string>
+    
+    <string-array name="action">
+    	<item>8000</item>
+    	<item>16000</item>
+    	<item>22050</item>
+    	<item>44100</item>
+    	<item>48000</item>
+    </string-array>
 </resources>

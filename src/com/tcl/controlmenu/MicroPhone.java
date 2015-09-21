@@ -40,13 +40,21 @@ public class MicroPhone extends CCSprite {
 		
 	}
 	
+	public void setVisibleValue(boolean value){
+		this.setVisible(value);
+		circle3.setVisible(value);
+		circle2.setVisible(value);
+		circle1.setVisible(value);
+		mic.setVisible(value);
+	}
+	
 	public void updateState(float dt){
 
-		if (count++ < 20) {
+		if (count++ < dt) {
 			circle1.setVisible(false);
 			circle2.setVisible(true);
 			circle3.setVisible(false);
-		}else if(count > 20 && count < 40){
+		}else if(count > dt && count < 2*dt){
 			circle1.setVisible(true);
 			circle2.setVisible(false);
 			circle3.setVisible(true);			

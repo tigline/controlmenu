@@ -1,5 +1,7 @@
 package com.tcl.controlmenu;
 
+import java.util.ArrayList;
+
 import android.app.Activity;
 
 import com.badlogic.gdx.graphics.Color;
@@ -11,15 +13,16 @@ import cocos2d.layers_scenes_transitions_nodes.CCScene;
 public class AppDelegate extends CCApplication {
 	public CCScene scene ;
 	public Activity appActivity;
-	public AppDelegate(){
+	public ArrayList<int[]> Rat;
+	AudioProcess Process;
+	public AppDelegate(MainActivity mainActivity, ArrayList<int[]> outRat ,AudioProcess audioProcess){
 		super();
+		appActivity = mainActivity;
+		Rat = outRat;
+		Process = audioProcess;
 	}
 	
-	public AppDelegate(MainActivity mainActivity) {
-		// TODO Auto-generated constructor stub
-		appActivity = mainActivity;
-		//scene = HelloWorldScene.scene(mainActivity);
-	}
+
 
 	@Override
 	public boolean applicationDidFinishLaunching() {
@@ -29,7 +32,7 @@ public class AppDelegate extends CCApplication {
         pDirector.setOpenGlView();
         
         //CCScene scene = HelloWorldScene.scene();
-        scene = HelloScene.scene(appActivity);
+        scene = HelloScene.scene(appActivity,Rat,Process);
     
         pDirector.runWithScene(scene);
 
