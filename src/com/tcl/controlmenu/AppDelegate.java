@@ -13,13 +13,13 @@ import cocos2d.layers_scenes_transitions_nodes.CCScene;
 public class AppDelegate extends CCApplication {
 	public CCScene scene ;
 	public Activity appActivity;
-	public ArrayList<int[]> Rat;
+
 	AudioProcess Process;
-	public AppDelegate(MainActivity mainActivity, ArrayList<int[]> outRat ,AudioProcess audioProcess){
+	public AppDelegate(MainActivity mainActivity){
 		super();
 		appActivity = mainActivity;
-		Rat = outRat;
-		Process = audioProcess;
+
+		
 	}
 	
 
@@ -32,7 +32,7 @@ public class AppDelegate extends CCApplication {
         pDirector.setOpenGlView();
         
         //CCScene scene = HelloWorldScene.scene();
-        scene = HelloScene.scene(appActivity,Rat,Process);
+        scene = HelloScene.scene(appActivity);
     
         pDirector.runWithScene(scene);
 

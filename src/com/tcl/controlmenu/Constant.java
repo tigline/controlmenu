@@ -19,4 +19,9 @@ public class Constant {
 	public static final float V_TENUATION=0.999f;//速度衰减系数
 	public static final float STANDA_BAll_R = 392.0f;
 	public static final CCPoint SCREEN_CENTER = new CCPoint(SCREEN_WIDTH/2, SCREEN_HEIGHT/2);
+	public static boolean weakup;
+	public static boolean talk;
+	public static boolean talkEnd;
+	public static boolean onResult;
+	public static String resultText;
 }

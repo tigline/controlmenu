@@ -13,4 +13,7 @@
     	<item>44100</item>
     	<item>48000</item>
     </string-array>
+    
+    <string name="app_id">535625b1</string>
+    
 </resources>

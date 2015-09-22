@@ -43,10 +43,12 @@ import static com.tcl.controlmenu.Constant.*;
 public class HelloScene extends CCLayer {
 
 	
-	public static ArrayList<int[]> outRat = new ArrayList<int[]>();//处理后的数据
+//	public static boolean weakup;
+//	public static boolean talk;
+//	public static boolean talkEnd;
 	public static int rate;
 	public static float angle;
-	private boolean checkInput;
+	private boolean create;
 	public static CCLabelTTF noticeText;
 	public static CCSize winSize;
 	public static MicroPhone microPhone;
@@ -60,10 +62,11 @@ public class HelloScene extends CCLayer {
 	private String [] infoList = {"碟中谍5", "最新的电影","控制空调","购物","听歌", "关灯","新闻","电视剧"};
 	private static Activity sceneContext;
 	public static AudioProcess Audioprocess;
-	public static CCScene scene(Activity activity, ArrayList<int[]> rat, AudioProcess process){
+	public static CCScene scene(Activity activity){
 		sceneContext= activity;
-		outRat = rat;
-		Audioprocess = process;
+//		weakup = hweakup;
+//		talk = htalk;
+//		talkEnd = htalkEnd;
 		winSize = CCDirector.sharedDirector().getVisibleSize();
 		CCScene scene = new CCScene();
 		backGround(scene);
@@ -81,7 +84,7 @@ public class HelloScene extends CCLayer {
 	@Override
 	public boolean init()
 	{
-		checkInput = false;
+		create = false;
 		circleList = new ArrayList<Circle>();
 		
 		CCMenuItemSprite pCloseItem = new CCMenuItemSprite("data/CloseNormal.png", "data/CloseSelected.png",this, "goToPlayer");
@@ -202,17 +205,50 @@ public class HelloScene extends CCLayer {
 			}
 		}
 			*/
-		if (checkInput) {
+		if (weakup) {
+			microPhone.setVisible(true);
+		}
+		if (talk) {
+			rate = 100;
+			noticeText.setVisible(false);
+			checkState.setVisible(false);
+			microPhone.updateState(rate);
+			if (rate > 0) {
+				rate -= 0.001;
+			}else{
+				rate = 100;
+			}
+			create = true;
+		}
+		if (talkEnd) {
+			microPhone.setVisible(false);
+			create = true;
+			noticeText.setVisible(true);
+			checkState.setVisible(true);
 			angle += 2;
 			checkState.setRotation(angle);
+		
+			
+		}
+		if (onResult) {
+			int num =  (int)MathUtils.random(Integer.MAX_VALUE -1) % 6 + (int)3;
+			int index = (int)MathUtils.random(Integer.MAX_VALUE -1) % 7;
+			float scale = num/10.0f;
+			Circle circle = new Circle(resultText,scale);
+			
+			circle.setPosition(SCREEN_CENTER);
+			
+			circleList.add(circle);
+			this.addChild(circle);
+			onResult = false;
+		}
+		
+		if (create) {
+			
 			//microPhone.setVisibleValue(false);
 			
 		}else {
-		if (rate > 0) {
-			rate -= 0.001;
-		}else{
-			rate = 100;
-		}
+		
 		}
 		
 		if (circleList.size() > 0) {
@@ -221,7 +257,7 @@ public class HelloScene extends CCLayer {
 			}
 		}
 		
-		microPhone.updateState(rate);
+		
 
 	}
 	
@@ -230,7 +266,7 @@ public class HelloScene extends CCLayer {
 	{
 		
 		microPhone.setVisible(true);
-		checkInput = false;
+		create = false;
 		noticeText.setVisible(false);
 		checkState.setVisible(false);
 		return true;
@@ -241,7 +277,7 @@ public class HelloScene extends CCLayer {
 	public void touchEnded(CCTouch pTouch)
 	{
 			
-			rate = 100;
+			
 			/*
 			if ((count++)%2==0) {
 				microPhone.setVisible(true);
@@ -257,7 +293,7 @@ public class HelloScene extends CCLayer {
 			}
 			*/
 			microPhone.setVisible(false);
-			checkInput = true;
+			create = true;
 			noticeText.setVisible(true);
 			checkState.setVisible(true);
 			int num =  (int)MathUtils.random(Integer.MAX_VALUE -1) % 6 + (int)3;
