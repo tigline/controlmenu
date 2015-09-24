@@ -48,9 +48,17 @@ public class Circle extends CCSprite {
 		CCLabelTTF content = new CCLabelTTF( text, "fangzheng.ttf", 36);
 		//setAnchorPoint(new CCPoint(0.5f, 0.5f));		
 		//content.setPosition(getContentSiye().width*scale/2, getContentSiye().height*scale/2);		
-		content.setPosition((rect.getMaxX() - rect.getMinX())/2, (rect.getMaxY() - rect.getMinY())/2);	
+		content.setPosition((rect.getMaxX() - rect.getMinX())*2/3, (rect.getMaxY() - rect.getMinY())/2);	
 		this.setBallR(STANDA_BAll_R * scale/2);
 		addChild(content);
+//		if ((MathUtils.random(Integer.MAX_VALUE -1) % 100 - 1)%2 == 0) {
+//			vx = 450.0f;
+//		}else{
+//			vx = -450.0f;
+//		}
+//		if ((MathUtils.random(Integer.MAX_VALUE -1) % 200 - 101)%2 == 0) {
+//			vy = -300.0f;
+//		}
 		vx =  (MathUtils.random(Integer.MAX_VALUE -1) % 1820.0f - 910.0f);
 		vy =  (MathUtils.random(Integer.MAX_VALUE -1) % 980.0f - 490.0f);
 		//setTouchEnabled(true);

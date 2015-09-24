@@ -28,6 +28,7 @@ public class MainActivity extends AndroidApplication {
         talk = false;
         talkEnd = false;
         onResult = false;
+        onError = false;
         initMsc();
         VoiceIdentifyListener listener = new VoiceIdentifyListener(this, voiceListenerCallback);
         
@@ -36,7 +37,6 @@ public class MainActivity extends AndroidApplication {
     	new AppDelegate(this);        
         initialize(Cocos2d.Game(), cfg);
 //        
-        
 	}
     
     private void initMsc() {
@@ -67,6 +67,7 @@ public class MainActivity extends AndroidApplication {
 			talkEnd = false;
 			talk = false;
 			onResult = false;
+			onError = false;
 		}
 		
 		@Override
@@ -79,6 +80,9 @@ public class MainActivity extends AndroidApplication {
 		public void onTalkVoiceResult(Object response) {
 			// TODO Auto-generated method stub
 			onResult = true;
+			talk = false;
+			talkEnd = false;
+			onError = false;
 			resultText = response.toString();
 		}
 		
@@ -87,6 +91,8 @@ public class MainActivity extends AndroidApplication {
 			// TODO Auto-generated method stub
 			talk = true;
 			talkEnd = false;
+			onResult = false;
+			onError = false;
 		}
 		
 		@Override
@@ -101,12 +107,17 @@ public class MainActivity extends AndroidApplication {
 			talkEnd = true;
 			talk = false;
 			onResult = false;
+			onError = false;
 		}
 		
 		@Override
 		public void onSleep() {
 			// TODO Auto-generated method stub
-			
+			weakup = true;
+			talkEnd = false;
+			talk = false;
+			onResult = false;
+			onError = false;
 		}
 		
 		@Override
@@ -118,7 +129,10 @@ public class MainActivity extends AndroidApplication {
 		@Override
 		public void onError(String error) {
 			// TODO Auto-generated method stub
-			
+			//talkEnd = false;
+			talk = false;
+			onResult = false;
+			onError = true;
 		}
 	};
     

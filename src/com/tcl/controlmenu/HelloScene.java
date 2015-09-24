@@ -50,6 +50,8 @@ public class HelloScene extends CCLayer {
 	public static float angle;
 	private boolean create;
 	public static CCLabelTTF noticeText;
+	public static CCLabelTTF errorNotice1;
+	public static CCLabelTTF errorNotice2;
 	public static CCSize winSize;
 	public static MicroPhone microPhone;
 	public static CCSprite erroState;
@@ -58,6 +60,7 @@ public class HelloScene extends CCLayer {
 	private static CCSprite starSky;
 	private ArrayList<Circle> circleList ;
 	private static int count;
+	private static int sum;;
 	//private String [] infoList = {"碟中谍5","购物","听歌", "关灯","新闻","电视剧" };,
 	private String [] infoList = {"碟中谍5", "最新的电影","控制空调","购物","听歌", "关灯","新闻","电视剧"};
 	private static Activity sceneContext;
@@ -112,7 +115,7 @@ public class HelloScene extends CCLayer {
 		checkState.setPosition(SCREEN_CENTER);
 		checkState.setVisible(false);
 		this.addChild(checkState);		
-		noticeText = new CCLabelTTF("识别中..。"+"\n" + "请稍后", "fangzheng.ttf", 36);
+		noticeText = new CCLabelTTF("识别中。。。", "fangzheng.ttf", 36);
 		noticeText.setPosition(SCREEN_CENTER);
 		noticeText.setVisible(false);
 		this.addChild(noticeText);
@@ -122,7 +125,15 @@ public class HelloScene extends CCLayer {
 		erroState.setPosition(SCREEN_CENTER);
 		erroState.setVisible(false);
 		this.addChild(erroState);
-
+		errorNotice1 = new CCLabelTTF("识别失败", "fangzheng.ttf", 36);
+		errorNotice1.setPosition(winSize.width/2, winSize.height/2 + 20);
+		errorNotice1.setVisible(false);
+		this.addChild(errorNotice1);
+		errorNotice2 = new CCLabelTTF("请重新输入", "fangzheng.ttf", 36);
+		errorNotice2.setPosition(winSize.width/2, winSize.height/2 - 20);
+		errorNotice2.setVisible(false);
+		this.addChild(errorNotice2);
+		create = true;
 
 		this.setTouchEnabled(true);
 
@@ -205,52 +216,79 @@ public class HelloScene extends CCLayer {
 			}
 		}
 			*/
+		
+		if (create) {
+
+			microPhone.setVisible(true);
+			if (sum < 5) {
+				if ( count++ > 30) { 
+					count = 0;
+					
+					int num =  (int)MathUtils.random(Integer.MAX_VALUE -1) % 6 + (int)3;
+					float scale = num/10.0f;
+					Circle circle = new Circle(infoList[sum],scale);
+					circle.setPosition(SCREEN_CENTER);
+					circleList.add(circle);
+					this.addChild(circle);
+					sum++;
+				}
+			}else{
+				create = false;
+			}
+
+		}
 		if (weakup) {
 			microPhone.setVisible(true);
+			//create = false;
 		}
 		if (talk) {
 			rate = 100;
-			noticeText.setVisible(false);
-			checkState.setVisible(false);
 			microPhone.updateState(rate);
 			if (rate > 0) {
 				rate -= 0.001;
 			}else{
 				rate = 100;
 			}
-			create = true;
+		}else{
+			//microPhone.setVisible(false);
 		}
 		if (talkEnd) {
 			microPhone.setVisible(false);
-			create = true;
 			noticeText.setVisible(true);
 			checkState.setVisible(true);
 			angle += 2;
 			checkState.setRotation(angle);
-		
-			
+		}else{
+			noticeText.setVisible(false);
+			checkState.setVisible(false);
 		}
 		if (onResult) {
+			microPhone.setVisible(false);
 			int num =  (int)MathUtils.random(Integer.MAX_VALUE -1) % 6 + (int)3;
-			int index = (int)MathUtils.random(Integer.MAX_VALUE -1) % 7;
 			float scale = num/10.0f;
 			Circle circle = new Circle(resultText,scale);
-			
 			circle.setPosition(SCREEN_CENTER);
-			
 			circleList.add(circle);
 			this.addChild(circle);
 			onResult = false;
 		}
 		
-		if (create) {
-			
-			//microPhone.setVisibleValue(false);
-			
+		if (onError) {
+			microPhone.setVisible(false);
+			erroState.setVisible(true);
+			errorNotice1.setVisible(true);
+			errorNotice2.setVisible(true);
 		}else {
-		
+			erroState.setVisible(false);
+			errorNotice1.setVisible(false);
+			errorNotice2.setVisible(false);
 		}
 		
+//		if (circleList.size() > 8) {
+//			Circle circle = circleList.get(circleList.size());
+//			circleList.remove(circleList.size()-1);
+//			this.removeChild(circle);
+//		}
 		if (circleList.size() > 0) {
 			for (int i = 0; i < circleList.size(); i++) {
 				circleList.get(i).CheckCollision(circleList, dt);

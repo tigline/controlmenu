@@ -23,5 +23,6 @@ public class Constant {
 	public static boolean talk;
 	public static boolean talkEnd;
 	public static boolean onResult;
+	public static boolean onError;
 	public static String resultText;
 }

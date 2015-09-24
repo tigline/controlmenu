@@ -523,6 +523,7 @@ public class VoiceIdentifyListener {
 		public void onBeginOfSpeech() {
 			Log.d(TAG, "onBeginOfSpeech！"+"开始说话");
 			if(mIVoiceListenerCallback != null){
+				Log.d(TAG, "onBeginOfSpeech！"+"onSleep()");
 				mIVoiceListenerCallback.onSleep();
 			}
 		}
